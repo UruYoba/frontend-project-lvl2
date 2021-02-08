@@ -10,23 +10,25 @@ const getPath = (filePath) => {
   }
   return path.join(process.cwd(), filePath);
 };
-const compare = (filePath1, filePath2) => {
+const gendiff = (filePath1, filePath2) => {
   const json1 = JSON.parse(fs.readFileSync(getPath(filePath1), 'utf-8'));
   const json2 = JSON.parse(fs.readFileSync(getPath(filePath2), 'utf-8'));
   const keys = _.union([...Object.keys(json1), ...Object.keys(json2)]).sort();
   const caseGenerator = (obj, key) => (_.has(obj, key) ? 'y' : 'n');
-  console.log('{');
+  let answer = '{\n';
+  // answer += ('{');
   keys.forEach((key) => {
     const ans = caseGenerator(json1, key) + caseGenerator(json2, key);
     if (ans === 'yy') {
-      if (json1[key] === json2[key]) console.log(`    ${key}: ${json1[key]}`);
+      if (json1[key] === json2[key]) answer += `    ${key}: ${json1[key]}\n`;
       else {
-        console.log(`  - ${key}: ${json1[key]}`);
-        console.log(`  + ${key}: ${json2[key]}`);
+        answer += (`  - ${key}: ${json1[key]}\n`);
+        answer += (`  + ${key}: ${json2[key]}\n`);
       }
-    } else if (ans === 'yn') console.log(`  - ${key}: ${json1[key]}`);
-    else console.log(`  + ${key}: ${json2[key]}`);
+    } else if (ans === 'yn') answer += (`  - ${key}: ${json1[key]}\n`);
+    else answer += (`  + ${key}: ${json2[key]}\n`);
   });
-  console.log('}');
+  answer += ('}');
+  return answer;
 };
-export default compare;
+export default gendiff;

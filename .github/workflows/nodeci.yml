@@ -19,7 +19,8 @@ jobs:
           make install
       - name: Run linter
         run: |
-          make lint          
+          make lint
+          make test          
         env:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

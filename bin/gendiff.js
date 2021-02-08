@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import commander from 'commander';
-import compare from './lib/compare.js';
+import gendiff from '../src/index.js';
 
 const program = new commander.Command();
 program
@@ -9,6 +9,7 @@ program
   .arguments('<filepath1> <filepath2>')
   .option('-f, --format [type]', 'output format')
   .action((filepath1, filepath2) => {
-    compare(filepath1, filepath2);
+    const ans = gendiff(filepath1, filepath2);
+    console.log(ans);
   })
   .parse();
