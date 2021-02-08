@@ -1,15 +1,12 @@
 #!/usr/bin/env node
-import commander from 'commander';
-import gendiff from '../src/index.js';
+import program from 'commander';
+import gendiff from '../index.js';
 
-const program = new commander.Command();
-program
+program.arguments('<filepath1> <filepath2>')
   .description('Compares two configuration files and shows a difference.')
-  .version('0.0.1', '-v, --version', 'output the current output the version number')
-  .arguments('<filepath1> <filepath2>')
-  .option('-f, --format [type]', 'output format')
+  .version('1.0.0')
+  .option('-f, --format [type]', 'output format', 'stylish')
   .action((filepath1, filepath2) => {
-    const ans = gendiff(filepath1, filepath2);
-    console.log(ans);
+    console.log(gendiff(filepath1, filepath2, program.format));
   })
-  .parse();
+  .parse(process.argv);
